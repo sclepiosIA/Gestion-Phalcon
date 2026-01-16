@@ -152,16 +152,39 @@ class SecurityPlugin extends Injectable
      */
     public function beforeDispatch(Event $event, Dispatcher $dispatcher):void
     {
+        // For REST routes (/api/{resource}/{action}), dispatcher names can be misleading
+        // depending on the router/built-in server. Normalize using the URI.
+        $uriPath = (string) parse_url((string) ($_SERVER['REQUEST_URI'] ?? '/'), PHP_URL_PATH);
+        $segments = array_values(array_filter(explode('/', trim($uriPath, '/'))));
 
-        //Take the active controller/action from the dispatcher
         $controller = $dispatcher->getControllerName();
         $action = $dispatcher->getActionName();
 
+        if (($segments[0] ?? null) === 'api') {
+            $controller = (string) ($segments[1] ?? $controller);
+            $action = (string) ($segments[2] ?? $action ?? 'index');
+        }
+
         //Obtain the ACL list
         $acl = $this->getAcl();
+
         //Check if the Role have access to the controller (resource)
         $allowed = $acl->isAllowed(UserManager::getPermission(), $controller, $action);
-        if($allowed != Enum::ALLOW) {
+        if ($allowed != Enum::ALLOW) {
+            // API calls should not redirect to HTML login pages
+            if (($segments[0] ?? null) === 'api') {
+                $this->view->disable();
+                $this->response->setStatusCode(401, 'Unauthorized');
+                $this->response->setContentType('application/json', 'UTF-8');
+                $this->response->setContent(json_encode([
+                    'error' => 'unauthorized',
+                    'resource' => $controller,
+                    'action' => $action,
+                ]));
+                $this->response->send();
+                die;
+            }
+
             $this->redirectUser();
             $this->view->disable();
         }
