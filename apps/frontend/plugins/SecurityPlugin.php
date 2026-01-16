@@ -24,6 +24,12 @@ class SecurityPlugin extends Injectable
      */
     private function getActions(string $class):array{
         $result = [];
+
+        // Sécurité runtime: si la classe n'est pas chargée/auto-loadable, ne pas planter.
+        if (!class_exists($class)) {
+            return $result;
+        }
+
         foreach(get_class_methods($class) as $fn){
             if(strpos($fn, 'Action') !== false){
                 $result[] = str_replace('Action', '', $fn);
