@@ -1,4 +1,4 @@
-<?
+<?php
 use Phalcon\ModelBase;
 
 class SystemConfig extends ModelBase

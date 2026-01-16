@@ -1,4 +1,4 @@
-<?
+<?php
 use Phalcon\ModelBase;
 
 class PulsePresence extends ModelBase

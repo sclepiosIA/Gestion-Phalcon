@@ -1,4 +1,4 @@
-<?
+<?php
 use Phalcon\ModelBase;
 
 class TodoProjects extends ModelBase

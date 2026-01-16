@@ -1,4 +1,4 @@
-<?
+<?php
 use Phalcon\ModelBase;
 
 class EnquetesSatisfactionFormation extends ModelBase

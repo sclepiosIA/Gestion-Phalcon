@@ -1,4 +1,4 @@
-<?
+<?php
 $messages = [
     'index_index_title' => 'Home',
     'user_login_title' => 'User login',

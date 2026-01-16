@@ -1,4 +1,4 @@
-<?
+<?php
 use Phalcon\Events\Event,
 Phalcon\DI\Injectable,
 Phalcon\Mvc\Dispatcher;
