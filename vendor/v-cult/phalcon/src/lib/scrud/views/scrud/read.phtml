@@ -1,0 +1,28 @@
+<div class='title'>
+    Edit <?=implode('&nbsp;', $models)?>
+    <img id="searchItem" class='action' title="Rechercher" src="/lib/scrud/public/img/form/search.png" action-data='<?=json_encode([
+        'class'=>$manager,
+        'fn'=>'redirect',
+        'data'=>['path'=>$this->dispatcher->getControllerName().'/'.$actionModel.'/search'] 
+    ])?>' /> 
+</div>
+<form id='<?=$this->router->getActionName()?>Form' class='template action' action="<?=implode(' ', $models)?>" action-data='<?=json_encode([
+    'class'=>$manager,
+    'type'=>'submit',
+    'name'=>'validForm'
+])?>'>
+    <div class='content'>
+        <?=Phalcon\Tag::hiddenField($primaryKey)?>
+        <? foreach($models as $model): ?>
+            <?=Phalcon\Builder\Form::getFields($model)?>
+        <? endforeach; ?>
+    </div>
+    <div class='actionContainer'>
+        <div id='cancel' class='action form' preventDefault action-data='<?=json_encode([
+            'class'=>$manager,
+            'fn'=>'redirect',
+            'data'=>['path'=>$this->dispatcher->getControllerName().'/'.$actionModel.'/search']
+        ])?>'>Cancel</div>
+        <button id='create' class='form'>Modify</button>
+    </div>
+</form>

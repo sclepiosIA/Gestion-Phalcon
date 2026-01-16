@@ -1,6 +1,43 @@
-/vendor/
-/node_modules/
-/public/bower_components/
-/public/frontend/css/*.map
+# OS / Editors
 .DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Env / secrets
 .env
+.env.*
+*.key
+*.pem
+
+# Logs / cache
+*.log
+tmp/
+cache/
+.storage/
+coverage/
+
+# Node
+node_modules/
+dist/
+build/
+bun.lockb
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Front public deps (historique phalconTool)
+public/bower_components/
+
+# Vendor: ignore all, except internal phalconTool lib required at runtime
+/vendor/*
+!/vendor/v-cult/
+!/vendor/v-cult/phalcon/
+!/vendor/v-cult/phalcon/src/
+
+# SQL dumps (keep schema-mysql-final*.sql versioned)
+mysql_dump*.sql
+mysql_dump*.sql.gz
+*.dump
+*.bak

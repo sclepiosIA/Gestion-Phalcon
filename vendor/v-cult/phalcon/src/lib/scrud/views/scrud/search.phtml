@@ -1,0 +1,97 @@
+<div class='title'>
+    Search <?=implode('&nbsp;', $models)?> <img id="create" class='action' title="Create" src="/lib/scrud/public/img/form/add.png" type='blank' action-data='<?=json_encode([
+        'class'=>$manager,
+        'fn'=>'redirect',
+        'data'=>['path'=>$this->dispatcher->getControllerName().'/'.$actionModel.'/create'] 
+    ])?>' />    
+</div>
+<div class='searchContainer'>
+    <div class='search'>
+        <div class='fieldContainer'>
+            <?=Phalcon\Tag::selectStatic(['field', 'id'=>'field', 'class'=>'action', 'action-data'=>json_encode([
+                'class'=>$manager,
+                'name'=>'selectField',
+                'type'=>'change'
+            ])], $fields)?>
+        </div>
+        <div class='typeContainer'>
+            <? foreach($types as $name => $type): ?>
+                <?=Phalcon\Tag::selectStatic([$name, 'id'=>$name, 'class'=>'hide type'], $type)?>
+            <? endforeach; ?>
+        </div>
+        <div class='inputContainer action' action-data='<?=json_encode([
+            'class'=>$manager,
+            'fn'=>'autocompletion',
+            'type'=>'init',
+            'data'=>['cbFind'=>'findValue', 'cbSelect'=>'selectValue', 'placeholder'=> 'Entrer une valeur', 'attr'=>'disabled', 'id'=>'search']
+        ])?>'>
+        </div>
+        <div class='sortContainer'>
+            <label for='fieldSort'>Sort by</label>
+            <?=Phalcon\Tag::selectStatic(['fieldsort', 'id'=>'fieldSort', 'class'=>'action', 'action-data'=>json_encode([
+                'class'=>$manager,
+                'name'=>'changeSort',
+                'type'=>'change'
+            ])], array_slice($fields, 1))?> 
+            <?=Phalcon\Tag::selectStatic(['sort', 'id'=>'sort', 'class'=>'action', 'action-data'=>json_encode([
+                'class'=>$manager,
+                'name'=>'changeSort',
+                'type'=>'change'
+            ])], $sort)?>
+        </div>
+    </div>
+    <div class='filter hide'>
+        <span id='field'></span>
+        <span id='type'></span>
+        <span id='value'></span>
+        <img class='action' action-data='<?=json_encode([
+            'class'=>$manager,
+            'name'=>'removeFilter'
+        ])?>' src="/lib/scrud/public/img/form/cancel.png">
+    </div>
+</div>
+<div class='listingContainer'>
+    <table action="<?=$actionModel?>">
+        <thead>
+            <tr>
+                <th id='deleteAll' title='Delete all selected elements'>
+                    <img src="/lib/scrud/public/img/form/delete.png" class='action' action-data='<?=json_encode([
+                        'class'=>$manager,
+                        'name'=>'deleteAll'
+                    ])?>'/>
+                    <input title='Select all elements' type='checkbox' class='action' action-data='<?=json_encode([
+                        'class'=>$manager,
+                        'name'=>'toggleCheck',
+                        'type'=>'change'
+                    ])?>' />
+                </th>
+                <? foreach($models as $model): ?>
+                    <? foreach($model::getColumnsMap() as $name => $id): ?>
+                        <th id='<?=$id?>' alt='<?=$model?>' title='<?=$model?>'>
+                            <?=str_replace(['_id', 'is_'],['', ''],$name)?>
+                            <div title='Delete column' class='action remove' action-data='<?=json_encode([
+                                'class'=>$manager,
+                                'name'=>'removeField'    
+                            ])?>'>x</div>
+                        </th>
+                    <? endforeach; ?>
+                <? endforeach; ?>
+            </tr>
+        </thead>
+        <tbody>
+            <?=$this->partial('/'.$this->dispatcher->getControllerName().'/list', [
+                'models' => $models,
+                'rows' => $rows,
+                'primaryKey' =>$primaryKey,
+                'actionModel' =>$actionModel
+            ])?>
+        </tbody>
+    </table>
+</div>
+<div class='paginationContainer action' nbPage="<?=$nbPage?>" action-data='<?=json_encode([
+    'class'=>$manager,
+    'fn'=>'pagination',
+    'type'=>'init',
+    'data'=>['nbPage'=>$nbPage, 'cbContent'=>'getPage']    
+])?>'>
+</div>

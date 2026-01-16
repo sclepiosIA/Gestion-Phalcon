@@ -1,0 +1,39 @@
+<? foreach($rows as $row): ?>
+    <? $model = $models[0]; ?>
+    <tr class='action' type='blank' action-data='<?=json_encode([
+        'class'=>'SearchScrudManager',
+        'fn'=>'redirect',
+        'data'=>['path'=>$this->dispatcher->getControllerName().'/'.$actionModel.'/read?'.$model::getPrimaryKey().'='.$row->$primaryKey] 
+    ])?>'>
+        <td>
+            <input title='Select to delete' type='checkbox' class='action' stopPropagation id="<?=$row->$primaryKey?>" />
+        </td>
+        <? foreach($models as $model): ?>
+            <? foreach($model::getColumnsMap() as $name => $id): ?>
+                <?
+                    if(isset($includes) && !in_array($id, $includes)){
+                        continue;
+                    }
+                ?>
+                <td id='<?=$id?>' alt='<?=$model?>' title='<?=str_replace(['_id', 'is_'],['', ''],$name)?>'>
+                    <? if($model === $models[0]): ?>                        
+                        <?=Phalcon\Builder\Form::getDisplayValue($row, $model, $id)?>
+                    <? else: ?>
+                        <?
+                            $modelName = $models[0];
+                            $fieldName = $modelName::getReferencedField($model);          
+                            $realName = substr($fieldName, strpos($fieldName, '_')+1);              
+                            $modelName = ucfirst((new Phalcon\Support\Helper\Str\Uncamelize())($model)).'_'.$realName;    
+                            if($row->$modelName === null){   
+                                $cur = $row;
+                            } else {
+                                $cur = $row->$modelName;
+                            }                                            
+                        ?>
+                        <?=Phalcon\Builder\Form::getDisplayValue($cur, $model, $id)?>
+                    <? endif; ?>
+                </td>
+            <? endforeach; ?>
+        <? endforeach; ?> 
+    </tr>
+<? endforeach; ?>

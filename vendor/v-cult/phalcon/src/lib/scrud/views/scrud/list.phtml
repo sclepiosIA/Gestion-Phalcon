@@ -1,0 +1,16 @@
+<table>
+    <?=$this->partial('/'.$this->dispatcher->getControllerName().'/list', [
+        'models' => $models,
+        'rows' => $rows,
+        'includes' => $includes,
+        'primaryKey' =>$primaryKey,
+        'actionModel' =>$actionModel
+    ])?>    
+</table>
+<div>
+    <?=$this->partial('/'.$this->dispatcher->getControllerName().'/data', [
+        'data' => [
+            'nbPage' => $nbPage
+        ]
+    ])?>
+</div>

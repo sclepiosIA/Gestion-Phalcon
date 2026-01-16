@@ -1,0 +1,36 @@
+<div class='title'>Models Index</div>
+<? foreach($models as $index => $list): ?>
+    <fieldset>
+        <legend>
+            <?=ucfirst($index)?>
+        </legend>
+        <? foreach($list as $model): ?>
+            <?
+                if(strpos($model, '_') !== false){
+                    $name = $camelize($model);
+                } else {
+                    $name = ucfirst($model);
+                }
+            ?>
+            <div>
+                <a target='_blank' href="/<?=APP?>/<?=$this->dispatcher->getControllerName()?>/<?=$name?>/search">
+                    <?=$name?>
+                </a>
+            </div>
+            <?             
+                $name::getRelations('hasOne');
+                $full = '';
+                foreach(Phalcon\Builder\Form::$relations as $relations):      
+                    foreach($relations as $relation):              
+            ?>
+                        <div>
+                            <a target='_blank' href="/<?=APP?>/<?=$this->dispatcher->getControllerName()?>/<?=$name?>_<?=$relation['model']?>/search">
+                                <?=$name?> <?=$relation['model']?>
+                            </a>
+                        </div>
+                    <? endforeach; ?>
+                <? endforeach; ?>
+                
+        <? endforeach; ?>
+    </fieldset>
+<? endforeach; ?>

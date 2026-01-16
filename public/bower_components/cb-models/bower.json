@@ -1,0 +1,22 @@
+{
+  "name": "jsModels",
+  "homepage": "https://github.com/corentin-begne/jsModels",
+  "authors": [
+    "corentin begne <corentin.begne@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "jsdoc",
+    "docs"
+  ],
+  "dependencies": {
+    "cb-helpers": "*"
+  }
+}
