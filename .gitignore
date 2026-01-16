@@ -1,0 +1,6 @@
+/vendor/
+/node_modules/
+/public/bower_components/
+/public/frontend/css/*.map
+.DS_Store
+.env

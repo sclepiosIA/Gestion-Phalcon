@@ -1,0 +1,11 @@
+<div class='action' action-data='<?=json_encode([
+             'name'=>'test',
+             'data'=>[
+             	['title','hello world']
+             ]
+         ])?>'>hello world</div>
+<?=$this->partial('/data', [
+    'data'=>[
+        'nb' => 3
+    ]
+])?>
