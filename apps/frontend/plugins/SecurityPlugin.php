@@ -78,6 +78,13 @@ class SecurityPlugin extends Injectable
             }
         }
 
+        // Some controllers might not be autoloaded when building ACL (class_exists() => false),
+        // resulting in empty action lists and runtime errors like:
+        // "Access 'login' does not exist in component 'auth'".
+        // Force critical API components/actions.
+        $acl->addComponent('auth', ['login', 'register', 'me', 'refresh', 'logout']);
+        $acl->addComponent('emails', ['sync']);
+
         // define public/private ressources
         $private = [
             'index' => '*',
